@@ -1,9 +1,16 @@
 
 var _ = require("underscore");
 var mysql = require("mysql");
-var dao = require("./utils/dao");
+var dao = require("../utils/dao");
 var async = require("async");
 
+exports.init = function(conf){
+  //init dao
+  dao.init(conf);
+  //init memcache
+  //int logger
+
+}
 // method that builds queries
 exports.build = function(req,cb){
     

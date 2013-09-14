@@ -1,6 +1,17 @@
 
-var logic = require("../logic"); // TODO rather than have this as require.. move this to real time load 
+var logic = null;
 var async = require("async");
+
+exports.init = function(conf){
+  var path = conf.logic || "../logic";
+  logic = require(path);
+  if(conf.mode === "dev"){
+    setInterval(function(){
+      var path = conf.logic || "../logic";
+      logic = require(path);
+   },120000);
+  
+}
 
 function update(row,req){
 	var obj={}
@@ -48,7 +59,7 @@ exports.format = function(req,cb){
     			var output = {
     				"data" : data,
     				"header":header,
-    				"count" : req.results["count"][0]["count"]
+    				"total" : req.results["count"][0]["count"]
     			};
     			cb(null,output);
     		}

@@ -4,8 +4,8 @@ var fs = require('fs');
 var pool= null;
 
 
-exports.config = function(opts){
-	pool = mysql.createPool(opts.dao);
+exports.init = function(opts){
+	pool = mysql.createPool(opts.db);
 }
 
 exports.execute = function(sql,cb){
