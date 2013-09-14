@@ -1,0 +1,7 @@
+TODO
+
+1) start easyrep.js start up scripts
+2) read db info from config
+2) add memcahced api
+3) check and finish formatter logic
+4) add conditions for hash join and finalize json interface

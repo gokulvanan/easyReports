@@ -1,0 +1,19 @@
+
+{
+	"dao":{
+		"host" : "69.36.39.87",
+		"user" : "readonly",
+		"password" : "readonly",
+		"database" : "ads"
+		"debug":false
+	},
+	"keyval_cache":{
+		"host":"localhost"
+		"port":31000
+	},
+	list_cache:{
+		"host":"localhost"
+		"port":31000
+	}
+}
+	
