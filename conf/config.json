@@ -1,28 +1,33 @@
-
 {
-	"mode":"dev",
-	"port":8080,
-	"models":"./models",
-	"db":{
-		"host" : "69.36.39.87",
-		"user" : "readonly",
-		"password" : "readonly",
-		"database" : "ads",
-		"debug":false,
-	},
-	"cache":{
-		"keyval":{
-			"hosts":["localhost"],
-			"ports":[31000]	
-		},
-		"list":{
-			"host":"localhost",
-			"port":31000
-		}
-	}
-	"logger":{
-		"path":"",
-		"level":"debug"
-	}
+    "mode": "dev",
+    "port": 8080,
+    "models": "models",
+    "db": {
+        "host": "69.36.39.87",
+        "user": "readonly",
+        "password": "readonly",
+        "database": "ads",
+        "debug": false
+    },
+    "cache": {
+        "keyval": { 
+            "servers": "192.168.1.93:11211", 
+            "opts":{
+                "poolSize":10,
+                "timeout":5
+            }
+        },
+        "list": { 
+            "servers": "192.168.1.93:11211", 
+            "opts":{
+                "poolSize":10
+            }
+        }
+    },
+    "logger": {
+        "path": "",
+        "level": "debug"
+    }
 }
-	
+
+

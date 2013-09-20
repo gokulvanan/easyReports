@@ -1,9 +1,6 @@
 
 var mime ="text";
 
-exports.init = function(conf){
-    
-}
 
 function getContentType(){
   switch(mime.toLowerCase()){
@@ -26,44 +23,53 @@ module.exports= function ResponseBuilder(){
 	}	
 
 	function generateError(msg){
-		return {
-      status:"error",
-      message:msg
-    }
+		var response ={
+     	 	status:"error",
+      		message:msg
+    	}
+    	return JSON.stringify(response);
 	}
   
   function generateResponse(obj){
-		return {
-				status: "success",
-				message: (obj.data.length === 0) ? "No Data Found" : "Data Fetched Successfully",
-				table: obj.data,
-        header: obj.header,
-				total: obj.total,
-				page: obj.page,
-				rowsPerPage:obj.rowsPerPage
-			};
-  }
-	return {
+		var response = {
+			status: "success",
+			message: (obj.data.length === 0) ? "No Data Found" : "Data Fetched Successfully",
+			table: obj.data,
+       		header: obj.header,
+			total: obj.total,
+			page: obj.page,
+			rowsPerPage:obj.rowsPerPage
+		};
 
-		setMime: function(key){
-			mime=key;
-		},
-		start: function(){
-			return generatePrefix();
-		},
-		end: function(){
-			return generateSuffix()
-		},
-		error: function(msg){
-			return generateError(msg);
-		},
-		success: function(obj){
-      return generateResponse(obj);	
-		},
+		return JSON.stringify(response);
+  }
+
+return {
+
+	init: function(conf){
+   		console.log("Initailizing response builder");
+
+   		console.log("Response builder initailized");
+	},
+	setMime: function(key){
+		mime=key;
+	},
+	start: function(msg){
+		return generatePrefix(msg);
+	},
+	end: function(){
+		return generateSuffix()
+	},
+	error: function(msg){
+		return generateError(msg);
+	},
+	success: function(obj){
+    	return generateResponse(obj);	
+	},
     getHeader: function(){
        return {
           "Content-Type" : getContentType(),
        }
     }
- 	}
- }();
+ }
+}();

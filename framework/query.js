@@ -5,11 +5,12 @@ var dao = require("../utils/dao");
 var async = require("async");
 
 exports.init = function(conf){
+  console.log("Initializing Query Engine");
   //init dao
   dao.init(conf);
   //init memcache
   //int logger
-
+  console.log("Query Engine initialized");
 }
 // method that builds queries
 exports.build = function(req,cb){
@@ -53,7 +54,7 @@ exports.execute = function(req,cb){
     function(err){
       if(err) cb(err);
       else{
-        cb(output);
+        cb(null,output);
       }
     }
   );

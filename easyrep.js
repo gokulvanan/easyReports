@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-
 var program = require('commander');
 var fs = require("fs");
+var server = null;
 program
   .version('0.0.1')
   .option('-d, --dev', 'Devlopment Mode - (Overrides config.conf setting)')
   .option('-p, --prod', 'Production Mode - (Overrides config.conf setting)')
-  .option('-p, --port', 'HTTP Server Port no. - (Overrides config.conf setting')
+  .option('-p, --port', 'HTTP Server Port no. - (Overrides config.conf setting');
 
 program
   .command("start")
@@ -32,29 +32,25 @@ program
 
 
 function start(){
-//	try{
-		var conf = JSON.parse(fs.readFileSync("./conf/config.json"));
-		if(program.dev) 	conf.mode="dev";
-		else             	conf.mode="prod";
-		if(program.port)	conf.port=program.port;
-		var server = require("./framework/server");
-//		server.init(conf);
-//		server.start();
-/*	}catch(err){
-		console.log("Error in start");
-		console.log(err);
-	}
-  */
+  console.log("starting");
+  var conf = JSON.parse(fs.readFileSync("./conf/config.json"));
+  console.log("config loaded")
+  if(program.dev) 	     conf.mode="dev";
+	else if(program.prod)	 conf.mode="prod";
+	if(program.port)	     conf.port=program.port;
+	server = require("./framework/server");
+  server.init(conf);
+
+  server.start();
+  console.log("easyrep has started");
 }
 
 function stop(){
-//	try{
-		server.stop();
-/*	}catch(err){
-		console.log("Error in stop");
-		console.log(err);
-	}
-  */
+  console.log("stoping"); 
+	if(server) server.stop();
+  else  console.log("Error Server not started to stop");
+  console.log("easyrep has been stoped")
+
 }
 
 var args = process.argv;
