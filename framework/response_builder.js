@@ -22,15 +22,35 @@ module.exports= function ResponseBuilder(){
 		return "";
 	}	
 
-	function generateError(msg){
+	function generateError(type,msg){
 		var response ={
      	 	status:"error",
-      		message:msg
+     	 	type:type,
+      		message:msg+""
     	}
     	return JSON.stringify(response);
 	}
-  
-  function generateResponse(obj){
+	
+	function generateNofication(type,msg){
+		var response ={
+     	 	status:"notification",
+     	 	type:type,
+      		message:getNotifyMsg(type,msg)
+    	}
+    	return JSON.stringify(response);
+	} 
+
+	function getNotifyMsg(type,msg){
+		if(type === "validator"){
+			return msg.model;
+		}else if(type === "builder"){
+			return msg.sqls;
+		}else if(type === "executor"){
+			return msg;
+		}
+	} 
+
+  	function generateResponse(obj){
 		var response = {
 			status: "success",
 			message: (obj.data.length === 0) ? "No Data Found" : "Data Fetched Successfully",
@@ -52,7 +72,7 @@ return {
    		console.log("Response builder initailized");
 	},
 	setMime: function(key){
-		mime=key;
+		mime = (key) ? key : "text";
 	},
 	start: function(msg){
 		return generatePrefix(msg);
@@ -60,8 +80,11 @@ return {
 	end: function(){
 		return generateSuffix()
 	},
-	error: function(msg){
-		return generateError(msg);
+	error: function(type,msg){
+		return generateError(type,msg);
+	},
+	notify: function(type,msg){
+		return generateNofication(type,msg);
 	},
 	success: function(obj){
     	return generateResponse(obj);	

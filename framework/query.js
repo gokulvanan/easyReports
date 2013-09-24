@@ -2,6 +2,7 @@
 var _ = require("underscore");
 var mysql = require("mysql");
 var dao = require("../utils/dao");
+var common = require("../utils/common");
 var async = require("async");
 
 exports.init = function(conf){
@@ -28,11 +29,24 @@ exports.build = function(req,cb){
     var output= {};
     output.display=req.model.display;
     output.sqls=[];
-
-    //TODO add code for processing joins
+    output.joins={};   
+    
+    // Main query building
     var main =  _.template(query.select, {p:params});
     output.sqls.push({"type":"main",  "query": main+" limit "+params.page+","+params.rowsPerPage });
     output.sqls.push({"type":"count", "query":"select count(*) as total from ("+main+") as tempAlias"});
+
+    //Join query building
+    var joins = query.joins;
+    if(joins){
+      for(var j in joins){
+        var join = joins[j];
+        var sql = _.template(join.select, {p:params});
+        output.sqls.push({"type":j, "query":sql });    
+        output.joins[j] = {"join_type":join.type, "on":join.on}; // join charectersitcs
+      }
+    }
+    
     
     cb(null,output);
   });
@@ -47,15 +61,33 @@ exports.execute = function(req,cb){
     function (sql,callback){
       dao.execute(sql.query,function(err,rows){
         if(err) callback(err);
-        output[sql.type]=rows;         
-        callback();
+        else{
+          var joinInfo = req.joins[sql.type];
+          if(joinInfo){
+            process.nextTick(function(){
+              output[sql.type]=processJoin(rows,joinInfo);
+              callback()
+            });
+          }else{
+            output[sql.type]= rows;         
+            callback();    
+          }
+        }
       });
     },
     function(err){
       if(err) cb(err);
-      else{
-        cb(null,output);
-      }
+      else    cb(null,output);
     }
   );
+}
+
+
+function processJoin(rows,joinInfo){
+  var output = {};
+  for(var r in rows){
+    var joinFlag = common.getJoinFlag(rows[r],joinInfo.on,"^");
+    output[joinFlag]=rows[r];
+  }
+  return output;
 }

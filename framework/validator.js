@@ -3,6 +3,23 @@ var fs = require('fs');
 var MODEL_DIR = __dirname ;
 var MODEL_MAP={}; // used in prod mode to prevern json parse of models during server run time
 
+function mandatoryParamsCheck(req,cb){
+  var params = req.model.query.mandatory;
+  var actual = req.search;
+  var missing = new Array();
+  
+  if (params){
+    for(var i=0,len=params.length; i<len; i++) {
+      if(!actual[params[i]]) {
+        missing.push(params[i]);
+      }
+    }  
+  }
+  
+  if(missing.length > 0) cb(new Error("Mandatory parameter "+missing.join(",")+" missing from query string"));
+  else      cb(null,req);
+}
+
 //configure models directory
 exports.init = function(conf){
   
@@ -28,18 +45,18 @@ exports.init = function(conf){
 exports.validate  = function(req, cb){
   //check if req is a valid object
   if(!req) return cb(new Error("Null input to validate method of validator"));
-  
+  if(req.action === "") cb(new Error("Not action path specified"));
   if(MODEL_MAP[req.action]){ // prod mode has this cache map to improve performance
     req.model=MODEL_MAP[req.action];
-    cb(null,req);
+    mandatoryParamsCheck(req,cb);
   }else{
     process.nextTick(function(){
       var model = MODEL_DIR + "/" + req.action + ".json";
       fs.readFile(model,'utf8',function(err,data){
-        if(err)  cb(err);
+        if(err)  cb(new Error("Invalid action path "));
         else{
           req.model = JSON.parse(data);
-          cb(null,req)
+          mandatoryParamsCheck(req,cb);
         }
       });
     });

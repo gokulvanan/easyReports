@@ -1,7 +1,12 @@
 TODO
 
-1) start easyrep.js start up scripts
-2) read db info from config
-2) add memcahced api
-3) check and finish formatter logic
-4) add conditions for hash join and finalize json interface
+- provide instal script for this package
+  - have scripts to check and install node/ npm 
+  - have script to create directorys structure and expose only logic, conf and models folder
+  - have start run ,stop and restart actions
+- move delimeter hardcode to configuration
+- have code to check if memcached exists to prevent late response in absence of memcache server
+- add inner join filter - by default outer join currently in hash join
+- test with subqueries
+- tackle formatter failures with proper error message
+- improve performance through streaming

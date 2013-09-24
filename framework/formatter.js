@@ -3,6 +3,7 @@ var logic = null;
 var async = require("async");
 var _ = require("underscore");
 var Memcached = require("memcached");
+var common = require("../utils/common");
 var cache =  null;
 //
 
@@ -21,6 +22,7 @@ exports.init = function(conf){
   if(conf.cache && conf.cache.keyval){
     var keyval = conf.cache.keyval;
     cache = new Memcached(keyval.servers,keyval.opts);  
+    //TODO add code to verify if cache is up and running
   }
   
   console.log("Formatter initailized");
@@ -32,11 +34,11 @@ exports.format = function(req,cb){
     var res = req.results["main"];
     
     var display=_.map(req.display,function(val,key){
-        header[val.name]=val.header;
+        header[key]=val.header;
         val.name=key;
         return val;
     });
-
+    
     async.map(res,function(row,cb){
       process.nextTick(function(){
         update(display,req,row,cb);
@@ -56,50 +58,62 @@ exports.format = function(req,cb){
  };
 
 
-
+//TODO modify inner join logic
 function update(display,req,row,cb){
   
   async.map(display, function(dp,callback){
     try{
       var returnObj ={"name": dp.name};
-      if(!dp.format){
-        returnObj.val=row[dp.key];
-        
-        callback(null,returnObj);
-      } 
-      else{
-        var opts = dp.format.split("^");
-        
-        if(opts[0] === "cache"){ // memcache case
+      if(!dp.format){ // no format case
+        if(dp.join){
+          var j = req.joins[dp.join]
+          if(j){
+            var joinVal=j[row[dp.key]];
+            returnObj.val = (j.join_type == "inner")? joinVal : null;
+            callback(null,returnObj);
+          }else{
+            callback(new Error("join "+dp.join+" is not defined in the json file"));
+          }
+        }else{
+          returnObj.val = row[dp.key];  
+          callback(null,returnObj);
+        }
           
+        
+      } 
+      else{ // format case
+        var opts = dp.format.split("^");
+        if(opts[0] === "cache"){ // memcache case
           var flag = opts[1];
           if(opts.length>2) {
-              flag += opts.slice(2).join("");
+              flag += common.getJoinFlag(row,opts.slice(2),"");
           }
           if(dp.key) flag += row[dp.key];
+          
           cache.get(flag,function(err,data){
-              var val = row[dp.key]+"~";
+              var val = (row[dp.key]) ? row[dp.key]+"^" : "";
               if(err) val+= "Error";
               else{
                 data = (data)? data : "Unknown";
                 val +=data;
-              } 
+              }
               returnObj.val=val;   
               callback(null,returnObj);
           });
-
         }else{                    // other logic cases
           process.nextTick(function(){
             var func = logic[opts[0]];
-            if(func) returnObj.val= func(req,row,dp.key,opts.slice(1));
-            else  throw new Error(" Format logic "+opts[0]+" is not defined.");
-            callback(null,returnObj); 
+            if(func){
+              returnObj.val= func(req,row,dp.key,opts.slice(1));
+              callback(null,returnObj); 
+            } 
+            else  callback(new Error(" Format logic "+opts[0]+" is not defined."));
           });
         }
        
       }
     }catch(err){
-      cb(err);
+      callback(err);
     }
    
   },function(err,output){
@@ -107,10 +121,14 @@ function update(display,req,row,cb){
       if(err) cb(err);
       else{
         var obj = {};
+        var dicardFlag=false;
         _.map(output,function(o){
-          obj[o.name]= o.val;
+          var buff = o.val;
+          discardFlag = (buff === undefined) ;
+          obj[o.name] = o.val;
         });
-        cb(null,obj);
+        if(discardFlag) cb();
+        else            cb(null,obj);
       }
   });
   
