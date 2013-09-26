@@ -1,0 +1,20 @@
+{
+	"query":{
+		"select":" select daydate as daydate, publisher_id as publisher_id, advertiser_id as advertiser_id, campaign_id as campaign_id, client_id as client_id, device_name as device_name, country as country, carrier_name as carrier_name, mobile_model as mobile_model, region_code as region_code, user_agent as user_agent from clicks_logs <% if( p.sdate && p.edate ) { %> where daydate between <%= p.escape('sdate') %> and <%= p.escape('edate') %> <% } %> order by <%= p.orderBy %> <%= p.dir %> ", 
+		"defaults":{
+  			"orderBy":"daydate", 
+  			"dir":"desc" ,
+  			"page":0,
+  			"rowsPerPage":20
+  		},
+  		"mandatory":["sdate","edate"]
+
+	},
+	"display":{
+		"daydate": { "key":"daydate" ,  "header":"Date"},
+		"publisher": { "key":"publisher_id" ,  "header":"Publisher", "format":"cache^pub"},
+		"advertiser": { "key":"advertiser_id" ,  "header":"Advertiser", "format":"cache^adv"},
+		"campaign":  { "key":"campaign_id" ,  "header":"Campaigns", "format":"cache^camp"},
+		"siteApp": 	{ "key":"client_id" ,  "header":"SiteApps", "format":"cache^adc"}
+	}
+}

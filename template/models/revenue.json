@@ -1,0 +1,43 @@
+{
+	"query":{
+	"select":" select campaign_id as campaign_id, sum(traffic+traffic_win) as impression, sum(traffic_loss-traffic_win) as loss, sum(traffic_clicks+traffic_clicks_rtb) as clicks, sum(traffic_unfilled+traffic_unfilled_rtb) as unfilled, sum(publisher_revenue_clicks+publisher_revenue_clicks_rtb) as revenue from publisher_campaign <% if( p.sdate && p.edate ) { %> where daydate between <%= p.escape('sdate') %> and <%= p.escape('edate') %> <% } %>  group by <%= p.groupBy %> order by <%= p.orderBy %> <%= p.dir %> ", 
+	"joins":{
+		"adv":{
+			"on":["campaign_id"],
+			"type":"outer",
+			"select":"select campaign_id as  campaign_id, sum(cost_clicks+cost_clicks_rtb) as spent from advertiser_overview <% if( p.sdate && p.edate ) { %> where daydate between <%= p.escape('sdate') %> and <%= p.escape('edate') %> <% } %>  group by <%= p.groupBy %> "
+		}
+	},
+	"mandatory":["sdate","edate"],
+	"defaults":{
+			"groupBy":"campaign_id",
+  			"orderBy":"impression", 
+  			"dir":"desc" ,
+  			"page":0,
+  			"rowsPerPage":20
+  		}		
+	},
+	"display":{
+		"campaign": 		{  "key":"campaign_id" ,  "header":"Campaign Name", "format":"cache^camp-name"},
+		"camp_supply_type": {  "header":"Campaign Type", "format":"cache^camp-supply-type^campaign_id"},
+		"advertiser": 		{  "header":"Advertiser", "format":"cache^campadv-name^campaign_id"},
+		"day_part":  		{  "header":"Day Part", "format":"cache^camp-daypart^campaign_id"},
+		"country": 			{  "header":"Country", "format":"cache^camp-country^campaign_id"},
+		"carrier": 			{  "header":"Carriers",  "format":"cache^camp-carrier^campaign_id"},
+		"device": 			{  "header":"Devices",  "format":"cache^camp-device^campaign_id"},
+		"os": 				{  "header":"OS",  "format":"cache^camp-mobile-prop^campaign_id"},
+		"browsers":  		{  "header":"Browsers", "format":"cache^camp-browsers^campaign_id"},
+		"metrics": 			{  "header":"Buying Metrics", "format":"cache^camp-metrics^campaign_id"},
+		"cpc": 				{  "header":"Buying Rate", "format":"advertiser_cpc"},
+		"total_budget": 	{  "header":"Total Budget", "format":"cache^camp-max-budg^campaign_id"},
+		"daily_budget": 	{  "header":"Daily Budget", "format":"cache^camp-daily-budg^campaign_id"},
+		"impression":  		{  "key":"impression" ,  "header":"Impression"},
+		"loss": 			{  "key":"loss" ,  "header":"Loss"},
+		"clicks": 			{  "key":"clicks" ,  "header":"Clicks"},
+		"ctr": 				{  "header":"CTR", "format":"ctr"},
+		"spent":  			{  "join":"adv", "key":"spent" ,  "header":"Ad Spend" },
+		"revenue": 			{  "key":"revenue" ,  "header":"Revenue"},
+		"gross_profit":		{  "header":"Gross Profit", "format":"gross_profit"},
+		"pross_profit_perc":{  "header":"Gross Profit Perc", "format":"gross_profit_perc"}
+	}
+}
