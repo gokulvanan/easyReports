@@ -1,0 +1,34 @@
+{
+	// query holds the sql query used in report 
+
+	"query":{ 
+	// select is the main query which is coupled with template code for dynamic query generation
+	"select":" select id as id, sum(login) as logged_in_count, sum(logout) as logged_out_count  from logs <% if( p.sdate && p.edate ) { %> where daydate between <%= p.escape('sdate') %> and <%= p.escape('edate') %> <% } %>  group by <%= p.groupBy %> order by <%= p.orderBy %> <%= p.dir %> ", 
+	"joins":{ // An alternative approach to using sql join statments is to excute the other query in parallel and use hashmap join
+		"adv":{ //name of the alternate query.. note ther can be more than one
+			"on":["id"], // join on fields.. key to hashmap
+			"type":"outer", // type of join can be inner or outer
+			"select":"select id as  id, username as name from users" // join query 
+		}
+	},
+	"mandatory":["sdate","edate"], // mandatory fields expected in request
+	"defaults":{ // defaults to params used in query
+			"groupBy":"daydate", 
+  			"orderBy":"logged_in_count", 
+  			"dir":"desc" ,
+  			"page":0,
+  			"rowsPerPage":20
+  		}		
+	},
+	// defines  output table json..
+	// key.. is the alias form query,
+	// join="name of join from above to get key from there" 
+	//format="usage of cache or custom logic as defined in app.js, Check capitalize in app.js"
+	"display":{
+		"id": 				{  "key":"id" ,  "header":"Id"},
+		"name": 			{  "key":"name", "join":"adv" ,"header":"Name", "format":"capitalize"},
+		"email": 			{  "header":"Email", "format":"cache^email^id"},
+		"logged_in_count": 	{  "header":"Logged In" },
+		"logged_out_count":	{  "header":"Logged Out"}
+	}
+}

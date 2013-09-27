@@ -1,2 +1,4 @@
 TODO.txt
 node_modules/*
+template/models/clicks.json
+template/models/revenue.json
