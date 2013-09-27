@@ -14,7 +14,7 @@
         "database": "myDb",
         "debug": false
     },
-    // memcache connection used for keyval cache and caching list repsonse
+    // memcache connection used for keyval cache and  list repsonse cache
     "cache": {
         "keyval": { 
             "servers": "127.0.0.1:11211", 
@@ -30,10 +30,10 @@
             }
         }
     },
-    // logger config.. this is not yet implemented
+    // logger config.. 
     "logger": {
-        "path": "",
-        "level": "debug"
+        "path": "logs/",
+        "level": "info" // change to debug logs debug statements from framework
     }
 }
 
