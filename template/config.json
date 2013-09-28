@@ -1,6 +1,6 @@
 {
     // mode in which server should be run 
-    // possible options are dev and prod modes
+    // possible options are dev and prod modes, use prod mode to e
     "mode": "dev", 
     // port to listen
     "port": 8080,
