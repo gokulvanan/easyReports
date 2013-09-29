@@ -3,11 +3,16 @@ easyrep
 
 A nodejs based reporting framework
 
+##Prerequisistes
+ - node (if your on ubuntu sudo apt-get install node)
+ - npm  (if your on ubuntu sudo apt-get install npm )
+
 ##Install
 ```bash
 npm install -g easyrep
 ````
 Its recomended to use -g option so that easyrep is added to you /usr/bin directory.
+
 
 ##Quick Start
 
