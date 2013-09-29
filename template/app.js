@@ -13,7 +13,7 @@
 
 module.exports = {
  
- capitalize: function(req,row,col,args){
- 	return row[col].toUpperCase();
+ capitalize: function(row,joins,val,args){
+ 	return (val != null)? val.toUpperCase() : val;
  }
 }
