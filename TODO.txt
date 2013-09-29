@@ -1,16 +1,11 @@
 TODO
 
-- easyrep.js
-	- to have start and run.. where start would start on nohub
-	- to check with cluster
-	- to have option to load mock data for easy use case explaination
-
-- config.json
-	- to reorganise config options
-	- to work on authentication
-
 - server.js
 	- to add ability to server csv and xml and html
+	- to load test cluster mode 
 
 - query.js and formatter.js
-	- to check feasbility of streamin row results
+	- to check feasbility of streamin row results to improve peformance
+
+- misc
+	- to add enhancement to have json modles work for nosql data store such as mongo etc. 
