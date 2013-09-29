@@ -2,7 +2,7 @@
   "author": "Gokulvanan <gokulvanan@gmail.com> ",
   "name": "easyrep",
   "description": "A nodejs based reporting framework",
-  "version": "1.0.0-alpha",
+  "version": "0.0.1-alpha",
   "repository": {
     "type": "git",
     "url": "https://github.com/gokulvanan/easyReports"
@@ -10,9 +10,6 @@
   "main": "./lib/easyrep",
   "bin" : {
     "easyrep":"./bin/easyrep"
-  },
-  "scripts": {
-    "test": "make test"
   },
   "engines": {
     "node": "*"

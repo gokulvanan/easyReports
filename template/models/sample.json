@@ -45,7 +45,7 @@
 /* dynamic query is built using underscorejs templating library. Object "p" holds the params you get from web request along with defaults provided bleow. "p" has only method escape. used to escapre param values to prevent SQL injection.
 note: page & rowsPerPage are hardcoded parasm used in server for pagination. These should not be specified in templating, they are added directly by the framework code
 */
-	"select":" select id as id, user_id as user_id, daydate  as daydate  from easyrep_sample_logs <% if( p.sdate && p.edate ) { %> where daydate between <%= p.escape('sdate') %> and <%= p.escape('edate') %> <% } %>  order by <%= p.orderBy %> <%= p.dir %> ", 
+	"select":" select id as id, user_id as user_id, daydate  as daydate, action as action  from easyrep_sample_logs <% if( p.sdate && p.edate ) { %> where daydate between <%= p.escape('sdate') %> and <%= p.escape('edate') %> <% } %>  order by <%= p.orderBy %> <%= p.dir %> ", 
 	"joins":{ // An alternative approach to using sql join statments is to excute the other query in parallel and use hashmap join
 		"user":{ //name of the alternate query.. note this is used in display to refer to this queries output 
 			"on":["user_id"], // join field.. key to hashmap used in building the join. (note user_id alias should be present both in main query and join query
