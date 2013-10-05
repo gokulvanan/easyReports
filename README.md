@@ -5,12 +5,12 @@ A nodejs based reporting framework
 This JSON framework makes getting report data aggregated, transformed and display ready in JSON/CSV/XML format a very easy task.
 
 The plus points are:
- Its built with the idea of declarative programing, where a user declares configuration and models and lets the framework do rest of the work.
- It centralizes all business transformation logic in the form of app.js.
- Its built to work with no dev tools except a texteditor such as vim.
- Its built similar to play framework to enable to debugg and build reports by looking at responses from the browser without restarting the server.
- It forms the ideal backend for front end tools used in displaying grids, charts and other forms of data visualizations.
- It currently links to mysql data source.. Future relase would include mapping to other opensource datasources. 
+ - Its built with the idea of declarative programing, where a user declares configuration and models and lets the framework do rest of the work.
+ - It centralizes all business transformation logic in the form of app.js.
+ - Its built to work with no dev tools except a texteditor such as vim.
+ - Its built similar to play framework to enable to debugg and build reports by looking at responses from the browser without restarting the server.
+ - It forms the ideal backend for front end tools used in displaying grids, charts and other forms of data visualizations.
+ - It currently links to mysql data source.. Future relase would include mapping to other opensource datasources. 
 
 ##Prerequisites
  - node 
@@ -65,8 +65,8 @@ curl "http://localhost:8080/"
 {"status":"error","type":"validator","message":"Error: Not action path specified"}
 ```
 
-If you get the above response your sever is running and you just need to point to your model 
-Now to test sample.json model 
+If you get the above response your sever is running and you just need to point to your model.
+
 
 ```bash
 $ curl "http://localhost:8080/sample.json?sdate=2013-09-28&edate=2013-09-28"
