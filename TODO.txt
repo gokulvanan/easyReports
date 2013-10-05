@@ -5,4 +5,4 @@ TODO
 - config.json to keep memcache optional
 - address failure cases in json read to report in validate error message
 - meaningfull response when validate, build, execute and used
-
+- Collect load test stats 
