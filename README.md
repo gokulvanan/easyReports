@@ -47,7 +47,7 @@ vim config.json
 ```
 
 Load test data to work with.
-Note: This will create two sample tables in your databse and load data to them.
+> Note: This will create two sample tables in your databse and load data to them.
       These tables would map to the  model sample.json (models/sample.json)
       To know more on check sample.json in your models.
 
@@ -56,7 +56,8 @@ easyrep testdata
 ```
 
 Run server 
-Note:  easyrep start could be used to start server in a seprate background process while easyrep run starts the server in the current process which enables you to see the logs.
+> Note:  easyrep start could be used to start server in a seprate background process while easyrep run starts the server in the current process which enables you to see the logs.
+
 ```bash
 easyrep run
 ```
@@ -98,7 +99,8 @@ Add them to your request to get your response.
 
 ### Step 2 Build your query from the model declaration
 Add sdate and edate params to your request and use build prefix to verify the dynamic sql built from your request.
-Note the response below for sample.json model
+> Note the response below for sample.json model
+
 ```bash
  curl "http://localhost:8080/build.sample.json?sdate=2013-09-28&edate=2013-09-28"
 {"status":"notification","type":"builder","message":[{"type":"main","query":" select id as id, user_id as user_id, daydate  as daydate, action as action................
@@ -107,7 +109,8 @@ sql's generted could be verfied at this stage from the response json.
 
 ### Step 3 Execute your queries and verify raw results
 Add execute. prefix to your request to verify the raw response of the qureires built.
-Eg for sample.json is shown below. 
+> Eg for sample.json is shown below. 
+
 ```bash
 $ curl "http://localhost:8080/execute.sample.json?sdate=2013-09-28&edate=2013-09-28"
 {"status":"notification","type":"executor","message":{"main":[{"id":49,"user_id":1,"daydate":"2013-09-28T00:00:00.000Z","action":"Logged in"}.............
