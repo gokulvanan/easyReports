@@ -32,13 +32,15 @@ $ easyrep new
 ````
 
 Configure your databse connections:
+```json
 "db": {
         "host": "localhost",
         "user": "root",
         "password": "mysql",
         "database": "easyrep"
     },
-
+```
+in config.json
 ```bash
 cd testProj
 vim config.json
