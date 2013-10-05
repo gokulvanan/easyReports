@@ -1,11 +1,8 @@
 TODO
 
-- server.js
-	- to add ability to server csv and xml and html
-	- to load test cluster mode 
+- csv and xml support
+- csv hide formatter logic
+- config.json to keep memcache optional
+- address failure cases in json read to report in validate error message
+- meaningfull response when validate, build, execute and used
 
-- query.js and formatter.js
-	- to check feasbility of streamin row results to improve peformance
-
-- misc
-	- to add enhancement to have json modles work for nosql data store such as mongo etc. 
