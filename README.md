@@ -2,10 +2,20 @@ easyrep
 ========
 
 A nodejs based reporting framework
+This JSON framework makes getting report data aggregated, transformed and display ready in JSON/CSV/XML format a very easy task.
 
-##Prerequisistes
- - node (if your on ubuntu sudo apt-get install node)
- - npm  (if your on ubuntu sudo apt-get install npm )
+The plus points are:
+ - Its built with the idea of declarative programing, where a user declares configuration and models and lets the framework do rest of the work.
+ - It centralizes all business transformation logic in the form of app.js.
+ - Its built to work with no dev tools except a texteditor such as vim.
+ - Its built similar to play framework to enable to debugg and build reports by looking at responses from the browser without restarting the server.
+ - It forms the ideal backend for front end tools used in displaying grids, charts and other forms of data visualizations.
+ - It currently links to mysql data source.. Future relase would include mapping to other opensource datasources. 
+
+##Prerequisites
+ - node 
+ - npm
+ 
 
 ##Install
 ```bash
@@ -19,97 +29,108 @@ Its recomended to use -g option so that easyrep is added to you /usr/bin directo
 Create new project and run easyrep server
 ```bash
 $ easyrep new
-Enter name of you project testProj
-Yo.. project testProj is up and ready
-If your a first time user, follow these steps:
-1) cd into your project. cd testProj
-2) Modify your config.json to point to your mysql database
-3) use 'easyrep testdata' to load test data t tables to your database
-4) user 'easrep run' to run the server
-Thats it now access this using http://localhost:8080/sample.json&sdate=2013-09-28&edate=2013-09-28
-Find out more @  https://github.com/gokulvanan/easyReports
 ````
 
 Configure your databse connections:
+```json
 "db": {
         "host": "localhost",
         "user": "root",
         "password": "mysql",
         "database": "easyrep"
     },
-
+```
+in config.json
 ```bash
 cd testProj
 vim config.json
 ```
 
-Load test data to work with existing sample.json model
-Note: this will create two dummy tables on your databse. to know more on what type of tables check sample.json in your models.
+Load test data to work with.
+> Note: This will create two sample tables in your databse and load data to them.
+      These tables would map to the  model sample.json (models/sample.json)
+      To know more on check sample.json in your models.
 
 ```bash
 easyrep testdata
 ```
 
-Run server in dev mode
+Run server 
+> Note:  easyrep start could be used to start server in a seprate background process while easyrep run starts the server in the current process which enables you to see the logs.
+
 ```bash
 easyrep run
 ```
 
-In another terminal or browser make http request to your server
+In another terminal or browser make an http request to your server
 ```bash
 curl "http://localhost:8080/"
 {"status":"error","type":"validator","message":"Error: Not action path specified"}
 ```
 
-If you get the above response your good.. 
-check
-Now to test sample.json model 
-```bash
-curl "http://localhost:8080/validate.sample.json"
-{"status":"error","type":"validator","message":"Error: Mandatory parameter sdate,edate missing from query string"}
-```
-If you get the above response your doing better.. 
-Above response indicates the mandatory param validation declared in sample.json model is working
+If you get the above response your sever is running and you just need to point to your model.
 
-Now add sdate and edate params and check if dynamic sql generated from your reuest to sample.json
-```bash
- curl "http://localhost:8080/build.sample.json?sdate=2013-09-28&edate=2013-09-28"
-{"status":"notification","type":"builder","message":[{"type":"main","query":" select id as id, user_id as user_id, daydate  as daydate, action as action................
-```
-If you get the above response your now rocking.. 
-Above response indicates the dynamic query that was build from your request params. 
-If you want to you could test this out by loggin into mysql client and trying out the qureies. 
-Dont worry about the other attributes in response like type etc.. for now
 
-Now to verify if easyrep can execute the built queries 
-```bash
-$ curl "http://localhost:8080/execute.sample.json?sdate=2013-09-28&edate=2013-09-28"
-{"status":"notification","type":"executor","message":{"main":[{"id":49,"user_id":1,"daydate":"2013-09-28T00:00:00.000Z","action":"Logged in"}.............
-```
-If you get the above response your almost on you way to become an easyrep user.. 
-
-Now to check if you get the response json with the format logic and joins in place 
 ```bash
 $ curl "http://localhost:8080/sample.json?sdate=2013-09-28&edate=2013-09-28"
 {"status":"success","message":"Data Fetched Successfully","table":[{"name":"BOND","email":"007@gmail.com","actio.....
 ```
 
-The above reponse makes you and easyrep user.. congrats.. :)
-check out sample.json model to understand how to make your own models for your databsae schema.
-try running server on prod mode. (clusters)
-
-##Introduction
-easyrep  is the reports developing framework on nodejs. 
-Its built with objective of boosting productive in building reports.
-easyrep is built to enhance declarative programing. 
-It requires you delcare:
-  databse/cache configuration (config.js)
-  models  (json files -check sample.json)
-  format behavriour (app.js)
-
-The rest of massage code (process request params, execute quereies, build joins, format output form key val pairs, etc.  is left to easyrep. 
+Thats it and your ready to go.
 
 
+## Development Tips
+
+Easyrep was built to make developers life easy.
+The following steps would illustrate the way to about building a report.
+
+First get your model ready.
+An easy way to go about this to copy sample.json and change the query, join and display options as per your use case.
+
+### Step 1 Validate your model
+Validate your model using validate prefix as shown below for sample.json
+```bash
+curl "http://localhost:8080/validate.sample.json"
+{"status":"error","type":"validator","message":"Error: Mandatory parameter sdate,edate missing from query string"}
+```
+
+Above response indicates the missing of mandatory fields declared in sample.json model. 
+Add them to your request to get your response.
+
+### Step 2 Build your query from the model declaration
+Add sdate and edate params to your request and use build prefix to verify the dynamic sql built from your request.
+> Note the response below for sample.json model
+
+```bash
+ curl "http://localhost:8080/build.sample.json?sdate=2013-09-28&edate=2013-09-28"
+{"status":"notification","type":"builder","message":[{"type":"main","query":" select id as id, user_id as user_id, daydate  as daydate, action as action................
+```
+sql's generted could be verfied at this stage from the response json.
+
+### Step 3 Execute your queries and verify raw results
+Add execute. prefix to your request to verify the raw response of the qureires built.
+> Eg for sample.json is shown below. 
+
+```bash
+$ curl "http://localhost:8080/execute.sample.json?sdate=2013-09-28&edate=2013-09-28"
+{"status":"notification","type":"executor","message":{"main":[{"id":49,"user_id":1,"daydate":"2013-09-28T00:00:00.000Z","action":"Logged in"}.............
+```
+
+### Step 4 Remove all prefixes and verify if the format and translation logics work as expected.
+```bash
+$ curl "http://localhost:8080/sample.json?sdate=2013-09-28&edate=2013-09-28"
+{"status":"success","message":"Data Fetched Successfully","table":[{"name":"BOND","email":"007@gmail.com","actio.....
+```
+
+## Next Steps
+Try running server on prod mode. (clusters)
+
+
+## Model JSON Interface (WIP)
+The Model json interface is still to be finalized, watch this space for more info on the same
+
+
+## NOTICE
 This documenation is WIP. will be udpating with other refrences shortly
 For clarifications mail to gokulvanan@gmail.com
 
