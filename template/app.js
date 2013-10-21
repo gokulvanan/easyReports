@@ -4,9 +4,10 @@
 *
 **/
 
-module.exports = {
- 
- capitalize: function(row,results,val,args){
- 	return (val != null)? val.toUpperCase() : val;
- }
-}
+module.exports = function(){
+ return {
+   capitalize: function(row,results,val,key,cache){
+    return (val != null)? val.toUpperCase() : val;
+   }
+  }
+}();
