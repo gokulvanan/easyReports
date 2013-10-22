@@ -18,6 +18,15 @@ return {
         password: "mysql",
         database: "easyrep"
     },
+    //db configuration for mongodb datastore connection
+    mongo: {
+        host: "localhost",
+        port: 27017,
+        opts:{
+            auto_reconnect: true,
+            poolSize: 5
+        }
+    },
     // memcache connection used for keyval cache and  list repsonse cache
     cache: {
         keyval: { 
