@@ -22,6 +22,7 @@ return {
     mongo: {
         host: "localhost",
         port: 27017,
+        database: "easyrep",
         opts:{
             auto_reconnect: true,
             poolSize: 5
