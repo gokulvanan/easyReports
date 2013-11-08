@@ -1,8 +1,21 @@
 TODO
 
+- change json to js for flexible design (impreative + declarative) - done
+- support for mongo - done
+- changes formatter to be flexible and have impreative option where requrest params could not only modify query logic but also fromatter logic.
 - csv and xml support
 - csv hide formatter logic
 - config.json to keep memcache optional
 - address failure cases in json read to report in validate error message
 - meaningfull response when validate, build, execute and used
 - Collect load test stats 
+
+
+Couple of points from stackoverflow to consider while making changes to server/cluster code:
+If you have enough load to care about multiple cores, then you are going to want to do a few more things too:
+
+Run your Node.js service behind a web-proxy like Nginx or Apache - something that can do connection throttling (unless you want overload conditions to bring the box down completely), rewrite URLs, serve static content, and proxy other sub-services.
+
+Periodically recycle your worker processes. For a long-running process, even a small memory leak will eventually add up.
+
+Setup log collection / monitoring
