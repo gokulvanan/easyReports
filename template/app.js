@@ -6,8 +6,8 @@
 
 module.exports = function(){
  return {
-   capitalize: function(row,results,val,key,cache){
-    return (val != null)? val.toUpperCase() : val;
+   capitalize: function(row,results,val,key,cache,callback){
+    return callback((val != null)? val.toUpperCase() : val);
    }
   }
 }();
