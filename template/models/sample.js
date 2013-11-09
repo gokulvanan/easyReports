@@ -44,27 +44,31 @@
 var app = require("../app.js");// business logic file
 module.exports= function(){
 	return  {
-	query:{ 
-  /* dynamic query is built using underscorejs templating library. Object "p" holds the params you get from web request along with defaults provided bleow. "p" has only method escape. used to escapre param values to prevent SQL injection.
-  note: page & rowsPerPage are hardcoded parasm used in server for pagination. These should not be specified in templating, they are added directly by the framework code
-  */
-
-  // db.optimzer.aggregate([ {$match : {brandsafe:"Grey", country:{$in:["AS_IN","NA_US"]}} }, {$group : { _id: {client_id:"$client_id",publisher_id:"$publisher_id",country:"$country"}, imp:{$sum :"$impressions"}, unfilled:{$sum:"$unfilled"}, clicks:{$sum: "$clicks"}, revenue:{$sum:"$revenue"}}}, {$sort : {revenue: -1}}])
-
-    select:" select id as id, user_id as user_id, daydate  as daydate, action as action  from easyrep_sample_logs <% if( p.sdate && p.edate ) { %> where daydate between <%= p.escape('sdate') %> and <%= p.escape('edate') %> <% } %>  order by <%= p.orderBy %> <%= p.dir %> ", 
-    joins:{ // An alternative approach to using sql join statments is to excute the other query in parallel and use hashmap join
-      user:{ //name of the alternate query.. note this is used in display to refer to this queries output 
-        on:["user_id"], // join field.. key to hashmap used in building the join. (note user_id alias should be present both in main query and join query
-        select:"select id as user_id, name as name, email as email  from easyrep_sample_users" // join query 
-      }
+    request:{
+      mandatory:["sdate","edate"], // mandatory fields expected in web request
+      defaults:{ // default params used in query i.e. in absence of query params from web request
+        orderBy:"daydate", 
+        dir:"desc" ,
+        page:0, 
+        rowsPerPage:20
+      }	
     },
-    mandatory:["sdate","edate"], // mandatory fields expected in web request
-    defaults:{ // default params used in query i.e. in absence of query params from web request
-          orderBy:"daydate", 
-          dir:"desc" ,
-          page:0, 
-          rowsPerPage:20
-        }		
+
+    query:{ 
+    /* dynamic query is built using underscorejs templating library. Object "p" holds the params you get from web request along with defaults provided bleow. "p" has only method escape. used to escapre param values to prevent SQL injection.
+    note: page & rowsPerPage are hardcoded parasm used in server for pagination. These should not be specified in templating, they are added directly by the framework code
+    */
+
+    // db.optimzer.aggregate([ {$match : {brandsafe:"Grey", country:{$in:["AS_IN","NA_US"]}} }, {$group : { _id: {client_id:"$client_id",publisher_id:"$publisher_id",country:"$country"}, imp:{$sum :"$impressions"}, unfilled:{$sum:"$unfilled"}, clicks:{$sum: "$clicks"}, revenue:{$sum:"$revenue"}}}, {$sort : {revenue: -1}}])
+
+      select:" select id as id, user_id as user_id, daydate  as daydate, action as action  from easyrep_sample_logs <% if( p.sdate && p.edate ) { %> where daydate between <%= p.escape('sdate') %> and <%= p.escape('edate') %> <% } %>  order by <%= p.orderBy %> <%= p.dir %> ", 
+      joins:{ // An alternative approach to using sql join statments is to excute the other query in parallel and use hashmap join
+        user:{ //name of the alternate query.. note this is used in display to refer to this queries output 
+          on:["user_id"], // join field.. key to hashmap used in building the join. (note user_id alias should be present both in main query and join query
+          select:"select id as user_id, name as name, email as email  from easyrep_sample_users" // join query 
+        }
+      }
+        
     },
     /* display - defines  output table json..
        key referst to alias is the alias from queries above. 
@@ -82,5 +86,5 @@ module.exports= function(){
       daydate :	{  key : "daydate", header :"Date"}
     }
   }
-}();
+};
 
