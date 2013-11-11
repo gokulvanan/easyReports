@@ -2,7 +2,8 @@ TODO
 
 - change json to js for flexible design (impreative + declarative) - done
 - support for mongo - done
-- changes formatter to be flexible and have impreative option where requrest params could not only modify query logic but also fromatter logic.
+- changes formatter to be flexible and have impreative option where requrest params could not only modify query logic but also fromatter logic. - done
+- format method api - to remove results form method args and pass in joins map
 - csv and xml support
 - csv hide formatter logic
 - config.json to keep memcache optional
