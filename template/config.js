@@ -30,14 +30,15 @@ return {
     },
     // memcache connection used for keyval cache and  list repsonse cache
     cache: {
-        keyval: { 
+        keyval: { // used to get data  from cache in format method of display
             servers: "127.0.0.1:11211", 
             opts:{
                 poolSize:10,
                 timeout:5
             }
         },
-        list: { 
+        list: { // used to cache response based url and data  
+            defaultCacheDuration:600, // 10 minutes
             servers: "127.0.0.1:11211", 
             opts:{
                 poolSize:10

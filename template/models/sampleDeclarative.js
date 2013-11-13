@@ -46,7 +46,13 @@
 // BELOW IS AN EXAMPLE OF A DECLARATIVE MODEL
 var app = require("../app.js");// business logic file
 module.exports= function(){
+
 	return  {
+    
+    //Cache duration.. optional attribute to set cache duration for this model.. works only  when memcache list is define in config
+
+//    cacheDuration:10,
+
     // all get/post request params are passed in as params this can be validated for manadtory params,filtered (to modify the params before sending them query processing logic and sensible defautls could be added"
     request:{
       mandatory:["sdate","edate"], // mandatory fields expected in web request

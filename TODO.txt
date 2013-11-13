@@ -3,6 +3,8 @@ TODO
 - change json to js for flexible design (impreative + declarative) - done
 - support for mongo - done
 - changes formatter to be flexible and have impreative option where requrest params could not only modify query logic but also fromatter logic. - done
+- cache for list - done
+- to add code to validate cache connection - prevent from delayed response when memcache doesnt exist
 - format method api - to remove results form method args and pass in joins map
 - csv and xml support
 - csv hide formatter logic
