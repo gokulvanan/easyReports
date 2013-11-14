@@ -45,6 +45,18 @@ return {
             }
         }
     },
+    /* Uncomment to configure email properties
+     email:{
+      host:"host address",
+      port:569,
+      auth:{user:"username",pass:"password"},
+      templates:"templates",
+      error:{ //used in error reportin
+        from:"from@gmail.com",
+        to:"a@gmail.com,b@gmail.com",
+        subject:"Easyrep Error report"
+      }
+    },*/
     // logger config.. 
     logger: {
        path: "logs",
