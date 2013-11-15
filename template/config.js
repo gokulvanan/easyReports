@@ -56,7 +56,15 @@ return {
         to:"a@gmail.com,b@gmail.com",
         subject:"Easyrep Error report"
       }
-    },*/
+    },
+    cron:{
+      path:"cron",
+      scripts: {
+        "script1":1800,
+        "script2":600
+      }
+    },
+    */
     // logger config.. 
     logger: {
        path: "logs",
