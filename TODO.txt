@@ -4,8 +4,15 @@ TODO
 - support for mongo - done
 - changes formatter to be flexible and have impreative option where requrest params could not only modify query logic but also fromatter logic. - done
 - cache for list - done
+- add support for cron scripts (schedule executor) - done
+- provide email reporting feature and ability to send emails - done
+
+
+- add raw spec to to model to bypass validate, query and format lifecycle
+- better approach to meaningful logging
+- check use case for singleton require in utils module
 - to add code to validate cache connection - prevent from delayed response when memcache doesnt exist
-- format method api - to remove results form method args and pass in joins map
+- format method api - to remove results from method args and pass in joins map
 - csv and xml support
 - csv hide formatter logic
 - config.json to keep memcache optional
