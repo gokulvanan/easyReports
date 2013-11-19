@@ -1,19 +1,33 @@
 easyrep
 ========
 
-A nodejs based reporting framework
-This JSON framework makes getting report data aggregated, transformed and display ready in JSON/CSV/XML format a very easy task.
+A nodejs based reporting framework.
+                                                                                                                                                                              
+easyrep is an easy to use framework for building reports.
+Its built for the use case where the aggreation happens in the database mysql or mongo through group by statements in case of mysql and aggreration pipeline in case of mongo. 
+easyrep is an ideal backend for frontend displaying charts and grid using javascript and other data visualization apis;
 
-The plus points are:
- - Its built with the idea of declarative programing, where a user declares configuration and models and lets the framework do rest of the work.
+Why use easyrep?? 
+ - easyrep makes it easy to dyamically build these queries from request params (Get or Post), execute them and format them as required. 
+ - easyrep works with both mysql and mongo datasources.
+ - easyrep renders only JSON output currently, but future release would provide CSV,XML responses and also provide the ability to send email reports for request.
+ - easyrep takes care of monitoring through email services that report failure cases along with stacktrace when configured.                                      
+ - easyrep provides a scheduler service (cron) that enables running background ETL scripts as a separate process and yes these are also monitored.
+ - easyrep exploits nonblocking and is fast as well as scalable. It uses the cluster api to spawn childprocess to provide better scalability.
+ - working with easyrep saves time. You can focus on the UI and tweak the queries in your easyrep project at the same time.
+
+Thats not all it can do, some other features are:
+ - It simplifies developer task into 3 buckets 
+  - request (pre processing of params)
+  - query (dynamic query building)
+  - display(dynamic dispaly formatting)
+ - It takes care of monitoring by reporting failures via  the built in email wrapper. (email ability is also provided to developer building models).
+ - It has no routes. The name of the js model file declared is the route.
  - It centralizes all business transformation logic in the form of app.js.
- - Its built to work with no dev tools except a texteditor such as vim.
  - Its built similar to play framework to enable to debugg and build reports by looking at responses from the browser without restarting the server.
- - It forms the ideal backend for front end tools used in displaying grids, charts and other forms of data visualizations.
- - It currently links to mysql data source.. Future relase would include mapping to other opensource datasources. 
 
 ##Prerequisites
- - node 
+ - node
  - npm
  
 
@@ -24,7 +38,9 @@ npm install -g easyrep
 Its recomended to use -g option so that easyrep is added to you /usr/bin directory.
 
 
-##Quick Start
+##(WIP - Some interface has changes. Need to update the Documentation)
+
+##Quick Start (WIP - Some interface has changes. Need to update the Documentation)
 
 Create new project and run easyrep server
 ```bash
