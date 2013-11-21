@@ -1,11 +1,13 @@
 
 
 var cache = require("../lib/utils/cache.js");
-
+var logger = require("../lib/utils/logger.js");
 module.exports = {
   setUp: function (callback) {
    console.log("setup call");
    this.conf = require("/home/komlimobile/git/KM-Interface-Components/kmreports/config.js")
+   var log = logger.getLogger(this.conf,"server");
+   this.conf.getLogger = function() {return log;}
    callback();
   },
   tearDown: function (callback) {
