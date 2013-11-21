@@ -29,3 +29,41 @@ Run your Node.js service behind a web-proxy like Nginx or Apache - something tha
 Periodically recycle your worker processes. For a long-running process, even a small memory leak will eventually add up.
 
 Setup log collection / monitoring
+
+
+
+
+
+
+EMAIL - USE TEMPLATE MAP in send and reportError
+- add sample error.html to error reporting
+- keep stack trace optional
+
+DAO and MONGO- add methods to provide streaming rather than getting full rows back as result
+- add ability to get Pools
+
+MONGO - add pool map concept 
+
+Build wrapper for Cache
+
+Clarify need of common.js
+
+need to rethink logger and its use and avoid cyclic recall in email.js
+
+response builder to work with other response
+
+think on csv and email generation from request
+
+provide raw construction ability
+
+check on js coding convention - use case of prototype to improve efficiency
+
+stablize cron.. use node cron if nedded.
+
+better code documentation
+
+startup code for mongo needed.
+
+need to test full new project creation process
+
+need startserver analogus to startcron
