@@ -6,7 +6,7 @@
 
 module.exports = function(){
  return {
-   capitalize: function(row,results,val,key,cache,callback){
+   capitalize: function(row,results,val,key,cacheMap,callback){
      //incase of error callback(err);
     return callback((val != null)? val.toUpperCase() : val);
    }
