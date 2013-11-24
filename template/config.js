@@ -68,8 +68,7 @@ return {
     cron:{
       path:"cron",
       scripts: { //name of script in cron folder without the .js extension and duration in seconds
-        "script1":1800,
-        "script2":600
+        "test":{ interval:10, loadOnStart:true, monitor:true}
       }
     },
     */
