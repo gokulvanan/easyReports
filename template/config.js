@@ -7,19 +7,24 @@ return {
     mode: "dev", 
     // port to listen
     port: 8080,
-    //cluster size when run in prod mode. by default.. number of cpu cores would be taken as cluster size
+    //cluster size when run in prod mode. 
+    // uncomment the below line to customize numer of clusters
+    // by default.. number of cpu cores would be taken as cluster size
     //"clusters":4,
     // relative or absloute path to models folder that hold model json
     models: "models",
     //db configurations for mysql database connection
     db: {
+      default:{
         host: "localhost",
         user: "root",
         password: "mysql",
         database: "easyrep"
+      }
     },
     //db configuration for mongodb datastore connection
     mongo: {
+      default:{
         host: "localhost",
         port: 27017,
         database: "easyrep",
@@ -27,17 +32,18 @@ return {
             auto_reconnect: true,
             poolSize: 5
         }
+      }
     },
-    // memcache connection used for keyval cache and  list repsonse cache
+    // memcache connection 
     cache: {
-        keyval: { // used to get data  from cache in format method of display
+        keyval: { //cache used to get key val for formatting in display
             servers: "127.0.0.1:11211", 
             opts:{
                 poolSize:10,
                 timeout:5
             }
         },
-        list: { // used to cache response based url and data  
+        default: { // default cache used in cache all request response from the server
             defaultCacheDuration:600, // 10 minutes
             servers: "127.0.0.1:11211", 
             opts:{
@@ -50,25 +56,26 @@ return {
       host:"host address",
       port:569,
       auth:{user:"username",pass:"password"},
-      templates:"templates",
-      error:{ //used in error reportin
+      templates:"templates", //template diector to build templates for email output
+      error:{ //used in error reporting, triggered from logger.alert method call
         from:"from@gmail.com",
         to:"a@gmail.com,b@gmail.com",
         subject:"Easyrep Error report"
       }
     },
+    */
+    /* Uncomment to configure cron server properties
     cron:{
       path:"cron",
-      scripts: {
-        "script1":1800,
-        "script2":600
+      scripts: { //name of script in cron folder without the .js extension and duration in seconds
+        "test":{ interval:10, loadOnStart:true, monitor:true}
       }
     },
     */
     // logger config.. 
     logger: {
        path: "logs",
-       level: "info" // change to debug logs debug statements from framework
+       level: "info" // change to trace or  debug to check framewrok trace/debug logs 
     }
   };
 }();
