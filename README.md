@@ -2,34 +2,53 @@ easyrep
 ========
 
 A nodejs based reporting framework.
-                                                                                                                                                                              
-easyrep is an easy to use framework for building reports.
-Its built for the use case where the aggreation happens in the database mysql or mongo through group by statements in case of mysql and aggreration pipeline in case of mongo. 
-easyrep is an ideal backend for frontend displaying charts and grid using javascript and other data visualization apis;
 
-Why use easyrep?? 
- - easyrep makes it easy to dyamically build these queries from request params (Get or Post), execute them and format them as required. 
- - easyrep works with both mysql and mongo datasources.
- - easyrep renders only JSON output currently, but future release would provide CSV,XML responses and also provide the ability to send email reports for request.
- - easyrep takes care of monitoring through email services that report failure cases along with stacktrace when configured.                                      
- - easyrep provides a scheduler service (cron) that enables running background ETL scripts as a separate process and yes these are also monitored.
- - easyrep exploits nonblocking and is fast as well as scalable. It uses the cluster api to spawn childprocess to provide better scalability.
- - working with easyrep saves time. You can focus on the UI and tweak the queries in your easyrep project at the same time.
+easyrep is an ideal framework to build RESTful Web Services over Datatstores.
+easyrep primarily outputs JSON which integrates easily with existing Javascirpt Grid, Data Visualization API's. 
+It forms a abstract layer over mysql and mongo datasource and provides easy to use wrappers over cache, emailer and logger.
 
-Thats not all it can do, some other features are:
- - It simplifies developer task into 3 buckets 
+easyrep as the name says is super easy.. you can get up an running with reports in 10 minutes.
+
+#Disclaimer
+The API is currently in beta stage.. I will try best not to know make changes to established interfaces for model's and cron files, unless they are very much required.   
+
+##Why use easyrep?? 
+ - easyrep makes it easy to dyamically build queries from request params (Get or Post), execute them and format results  as required. 
+ - write only the business logic leave rest of the processing to easyrep.
+ - easyrep wraps over both mysql and mongo datasources.
+ - easyrep renders only JSON output currently, but future release would provide CSV,XML responses. 
+ - easyrep is self monitoring and provides email services that report failure along with stacktrace.                    
+ - easyrep provides background job runner (cron) that enables running background ETL scripts as a separate process and yes these are also monitored.
+ - easyrep lets you debug your code from the browser.
+ - easyrep exploits nonblocking approach to request processing and is fast. It uses the cluster api to spawn childprocess to provide better scalability.
+
+##How it works:
+
+easyrep comprise of two independent components:
+ - Http Server - Web server used to process request and parse it to models.
+ - Cron Schedule Server - Independent Cron Process that creates and destroys child threads to process cron jobs.
+
+The HTTP server process the request in waterfall mode:
+- validate (validate params, format params, apply defaults to params)
+- build-query (build dynamic query from request params)
+- execute-query (execute query in the datastore mysql/mongo)
+- format (formats response from query results to desired format)
+
+Each of the stages in this approach invoke methods or read attributes of user defined models.
+Such models are declared in models folder.. see sampleDeclarative.js
+
+The model simplifies developer task into 3 buckets 
   - request (pre processing of params)
   - query (dynamic query building)
   - display(dynamic dispaly formatting)
- - It takes care of monitoring by reporting failures via  the built in email wrapper. (email ability is also provided to developer building models).
- - It has no routes. The name of the js model file declared is the route.
- - It centralizes all business transformation logic in the form of app.js.
- - Its built similar to play framework to enable to debugg and build reports by looking at responses from the browser without restarting the server.
+
+###Model Structure
+TODO
 
 ##Prerequisites
  - node
  - npm
- 
+#Quick Start (WIP - Some interface has changes. Need to update the Documentation)
 
 ##Install
 ```bash
@@ -37,30 +56,28 @@ npm install -g easyrep
 ````
 Its recomended to use -g option so that easyrep is added to you /usr/bin directory.
 
-
-##(WIP - Some interface has changes. Need to update the Documentation)
-
-##Quick Start (WIP - Some interface has changes. Need to update the Documentation)
-
-Create new project and run easyrep server
+Create new project 
 ```bash
 $ easyrep new
 ````
+All configurations can be made in config.js
+Configure your databse connections: 
+(Note: default name is mandatory for one datasource connection)
+Other datasources can be refred by name.
+(Note: This is applies to monog and cache as well)
 
-Configure your databse connections:
+
 ```json
 "db": {
-        "host": "localhost",
-        "user": "root",
-        "password": "mysql",
-        "database": "easyrep"
+        default:{
+            "host": "localhost",
+            "user": "root",
+            "password": "mysql",
+            "database": "easyrep"
+         }..
     },
 ```
-in config.json
-```bash
-cd testProj
-vim config.json
-```
+
 
 Load test data to work with.
 > Note: This will create two sample tables in your databse and load data to them.
