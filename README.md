@@ -5,12 +5,12 @@ A nodejs based reporting framework.
 
 easyrep is an ideal framework to build RESTful Web Services over Datatstores.
 easyrep primarily outputs JSON which integrates easily with existing Javascirpt Grid, Data Visualization API's. 
-It forms a abstract layer over mysql and mongo datasource and provides easy to use wrappers over cache, emailer and logger.
+It forms an abstract layer over mysql and mongo datasources and provides easy to use wrappers over cache, email and logging.
 
 easyrep as the name says is super easy.. you can get up an running with reports in 10 minutes.
 
 #Disclaimer
-The API is currently in beta stage.. I will try best not to know make changes to established interfaces for model's and cron files, unless they are very much required.   
+The API is currently in beta stage.. I will try best not to make changes to established interfaces for model's and cron files, unless they are very much required.   
 
 ##Why use easyrep?? 
  - easyrep makes it easy to dyamically build queries from request params (Get or Post), execute them and format results  as required. 
@@ -28,7 +28,7 @@ easyrep comprise of two independent components:
  - Http Server - Web server used to process request and parse it to models.
  - Cron Schedule Server - Independent Cron Process that creates and destroys child threads to process cron jobs.
 
-The HTTP server process the request in waterfall mode:
+The HTTP server process the request in waterfall mode, the following are the stages :
 - validate (validate params, format params, apply defaults to params)
 - build-query (build dynamic query from request params)
 - execute-query (execute query in the datastore mysql/mongo)
@@ -45,10 +45,35 @@ The model simplifies developer task into 3 buckets
 ###Model Structure
 TODO
 
-##Prerequisites
- - node
- - npm
-#Quick Start (WIP - Some interface has changes. Need to update the Documentation)
+
+# CronServer
+The Cron server provides interface to run background jobs, All utilites such as DB connection pools to mysql and monog, logging, emailing and caching are available to cron as in http models. 
+utils and rawUtils are the two variables injected into cron script function,
+
+```json
+  cron:{
+      path:"cron", // relative folder path to cron scripts
+      scripts:{ 
+        "loadOnceAtStart":{"loadOnStart":true, "monitor":false}, //start once during server startup
+        "periodicLoader":{ "interval":3000, "loadOnStart":false, "monitor":false},// dont start at startup run ever 50min
+        "cacheData":{ "interval":600, "loadOnStart":`, "monitor":false} // start at startup and run every 10min
+     }   
+    }, 
+```
+
+The above configuration acitivates the 3 js flies loadOnceAtStart.js, periodicLoader.js and cacheData.js in cron dierctory given by path.
+
+loadOnStart - if set to true starts this js file on cron server start.
+interval - takes integer that specifies interval duration in seconds.
+monitor - if set to true will issue an email updating success or failure of the cron execution based on email configuration in config.js
+
+
+
+## Cron Job files structure: 
+TODO
+
+
+#Quick Start (HTTP Server)
 
 ##Install
 ```bash
@@ -157,10 +182,6 @@ $ curl "http://localhost:8080/sample.json?sdate=2013-09-28&edate=2013-09-28"
 
 ## Next Steps
 Try running server on prod mode. (clusters)
-
-
-## Model JSON Interface (WIP)
-The Model json interface is still to be finalized, watch this space for more info on the same
 
 
 ## NOTICE
